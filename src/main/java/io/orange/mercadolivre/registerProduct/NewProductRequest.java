@@ -2,6 +2,7 @@ package io.orange.mercadolivre.registerProduct;
 
 import io.jsonwebtoken.lang.Assert;
 import io.orange.mercadolivre.config.validators.annotations.ExistsId;
+import io.orange.mercadolivre.config.validators.annotations.UniqueValue;
 import io.orange.mercadolivre.registerCategory.Category;
 import io.orange.mercadolivre.registerDetails.NewDetailsRequest;
 import io.orange.mercadolivre.registerUser.UserAccount;
@@ -15,6 +16,7 @@ import java.util.*;
 
 public class NewProductRequest {
 
+    @UniqueValue(domainClass = Product.class,fieldName = "name", message = "Ops! Your duplicate name Value!")
     private @NotBlank String name;
     private @NotNull @Min(0) Integer availableQuantity;
     private @NotBlank @Column(length = 1000) String description;
