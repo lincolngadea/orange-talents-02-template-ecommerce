@@ -2,6 +2,7 @@ package io.orange.mercadolivre.registerProduct;
 
 import io.orange.mercadolivre.registerCategory.Category;
 import io.orange.mercadolivre.registerDetails.NewDetailsRequest;
+import io.orange.mercadolivre.registerImages.ProductImage;
 import io.orange.mercadolivre.registerUser.UserAccount;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.util.Assert;
@@ -34,6 +35,8 @@ public class Product {
 
     @OneToMany(mappedBy ="product", cascade = CascadeType.PERSIST)
     private Set<DetailProduct> details = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+    private Set<ProductImage> images = new HashSet<>();
 
     @Deprecated
     public Product() {
@@ -96,13 +99,6 @@ public class Product {
     }
 
     @Override
-    public String toString() {
-        return "Product{" +
-                "description='" + description + '\'' +
-                '}';
-    }
-
-    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -125,5 +121,31 @@ public class Product {
         } else if (!name.equals(other.name))
             return false;
         return true;
+    }
+
+    public void imagesAssociations(Set<String> links) {
+        Set<ProductImage> images = links.stream().map(link -> new ProductImage(this, link))
+                .collect(Collectors.toSet());
+        this.images.addAll(images);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", availableQuantity=" + availableQuantity +
+                ", description='" + description + '\'' +
+                ", category=" + category +
+                ", usernameAuth=" + usernameAuth +
+                ", instantDate=" + instantDate +
+                ", details=" + details +
+                ", images=" + images +
+                '}';
+    }
+
+    public boolean pertenceAoUsuario(UserAccount possibloOwner) {
+        return this.usernameAuth.equals(possibloOwner);
     }
 }
