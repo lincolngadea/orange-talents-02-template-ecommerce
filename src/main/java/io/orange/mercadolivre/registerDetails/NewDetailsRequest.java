@@ -30,13 +30,6 @@ public class NewDetailsRequest {
         return description;
     }
 
-    @Override
-    public String toString() {
-        return "NewDetailsRequest{" +
-                "description='" + description + '\'' +
-                '}';
-    }
-
     public DetailProduct toModel(@NotNull @Valid Product product) {
         return  new DetailProduct(title,description,product);
     }

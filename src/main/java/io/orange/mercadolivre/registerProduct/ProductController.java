@@ -2,6 +2,11 @@ package io.orange.mercadolivre.registerProduct;
 
 import io.orange.mercadolivre.registerDetails.RejectsRepeatedDetails;
 import io.orange.mercadolivre.registerImages.NewImagesRequest;
+import io.orange.mercadolivre.registerImages.UploadFiles;
+import io.orange.mercadolivre.registerProduct.request.NewProductOpinionRequest;
+import io.orange.mercadolivre.registerProduct.request.NewProductRequest;
+import io.orange.mercadolivre.registerProduct.response.ProductOpinionResponse;
+import io.orange.mercadolivre.registerProduct.response.ProductResponse;
 import io.orange.mercadolivre.registerUser.UserAccount;
 import io.orange.mercadolivre.registerUser.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,35 +43,67 @@ public class ProductController {
         webDataBinder.addValidators(new RejectsRepeatedDetails());
     }
 
-    @PostMapping("/product")
+    @PostMapping("/produto")
     @Transactional
     public ResponseEntity<?> createProduct(@RequestBody @Valid NewProductRequest request){
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserAccount usernameAuth = userAccountRepository.findByUsername(auth.getName()).get();
+        UserAccount usernameAuth = userAuthenticated();
         Product product = request.toModel(manager, usernameAuth);
         manager.persist(product);
-        return ResponseEntity.ok().build();
+
+        ProductResponse productResponse = new ProductResponse(product);
+        return ResponseEntity.ok(productResponse);
     }
 
-    @PostMapping("/product/{id}/images")
+    @PostMapping("/produto/{id}/images")
     @Transactional
     public String addImages(@PathVariable("id") Long id, @Valid NewImagesRequest request) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserAccount usernameAuth = userAccountRepository.findByUsername(auth.getName()).get();
-
+        UserAccount usernameAuth = userAuthenticated();
         Product product = manager.find(Product.class, id);
+        productValidId(usernameAuth, product);
 
-        if(!product.pertenceAoUsuario(usernameAuth)){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
         Set<String> links = uploadFiles.sendFile(request.getImages());
         product.imagesAssociations(links);
 
         manager.merge(product);
 
         return product.toString();
+    }
+
+    @PostMapping("produto/{id}/opiniao")
+    @Transactional
+    public ResponseEntity<?> productOpinio(@PathVariable("id") Long id, @RequestBody @Valid NewProductOpinionRequest request){
+
+        Product product = manager.find(Product.class,id);
+        UserAccount usernameAuth = userAuthenticated();
+        productValidId(usernameAuth, product);
+
+        ProductOpinion productOpinion = request.toModel(manager,product,usernameAuth);
+
+        manager.persist(productOpinion);
+        return ResponseEntity.ok(new ProductOpinionResponse(productOpinion));
+    }
+
+    /**
+     *
+     * @param usernameAuth validate
+     * @param product id validate
+     */
+    private void productValidId(UserAccount usernameAuth, Product product) {
+        if(!product.belongsToTheUser(usernameAuth)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    /**
+     *
+     * @return authenticated user
+     */
+    private UserAccount userAuthenticated() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserAccount usernameAuth = userAccountRepository.findByUsername(auth.getName()).get();
+        return usernameAuth;
     }
 }
 

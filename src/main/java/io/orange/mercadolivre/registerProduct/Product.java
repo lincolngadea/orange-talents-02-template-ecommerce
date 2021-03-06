@@ -129,23 +129,19 @@ public class Product {
         this.images.addAll(images);
     }
 
+    public boolean belongsToTheUser(UserAccount possibleOwner) {
+        return this.usernameAuth.equals(possibleOwner);
+    }
+
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", price=" + price +
                 ", availableQuantity=" + availableQuantity +
                 ", description='" + description + '\'' +
                 ", category=" + category +
-                ", usernameAuth=" + usernameAuth +
                 ", instantDate=" + instantDate +
-                ", details=" + details +
-                ", images=" + images +
                 '}';
-    }
-
-    public boolean pertenceAoUsuario(UserAccount possibloOwner) {
-        return this.usernameAuth.equals(possibloOwner);
     }
 }

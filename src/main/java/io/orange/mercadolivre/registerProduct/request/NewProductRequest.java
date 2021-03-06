@@ -1,10 +1,11 @@
-package io.orange.mercadolivre.registerProduct;
+package io.orange.mercadolivre.registerProduct.request;
 
 import io.jsonwebtoken.lang.Assert;
 import io.orange.mercadolivre.config.validators.annotations.ExistsId;
 import io.orange.mercadolivre.config.validators.annotations.UniqueValue;
 import io.orange.mercadolivre.registerCategory.Category;
 import io.orange.mercadolivre.registerDetails.NewDetailsRequest;
+import io.orange.mercadolivre.registerProduct.Product;
 import io.orange.mercadolivre.registerUser.UserAccount;
 
 import javax.persistence.Column;
@@ -71,10 +72,6 @@ public class NewProductRequest {
         return idCategory;
     }
 
-    public List<NewDetailsRequest> getDetails() {
-        return details;
-    }
-
     public void setDetails(List<NewDetailsRequest> details) {
         this.details = details;
     }
@@ -85,18 +82,6 @@ public class NewProductRequest {
         Assert.state(category!=null,"The category dont exists. id:"+idCategory);
 
         return new Product(name,price,availableQuantity,description,category,usernameAuth,details);
-    }
-
-    @Override
-    public String toString() {
-        return "NewProductRequest{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
-                ", availableQuantity=" + availableQuantity +
-                ", description='" + description + '\'' +
-                ", idCategory=" + idCategory +
-                ", details=" + details +
-                '}';
     }
 
     public Set<String> searchEqualDetails() {

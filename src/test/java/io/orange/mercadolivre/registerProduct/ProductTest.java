@@ -2,6 +2,7 @@ package io.orange.mercadolivre.registerProduct;
 
 import io.orange.mercadolivre.registerCategory.Category;
 import io.orange.mercadolivre.registerDetails.NewDetailsRequest;
+import io.orange.mercadolivre.registerProduct.request.NewProductRequest;
 import io.orange.mercadolivre.registerUser.UserAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

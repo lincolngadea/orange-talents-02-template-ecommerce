@@ -17,7 +17,10 @@ public class DetailProduct {
     public DetailProduct() {
     }
 
-    public DetailProduct(@NotBlank String name, @NotBlank String description, @NotNull @Valid Product product) {
+    public DetailProduct(
+            @NotBlank String name,
+            @NotBlank String description,
+            @NotNull @Valid Product product) {
         this.name = name;
         this.description = description;
         this.product = product;
@@ -37,13 +40,6 @@ public class DetailProduct {
 
     public String getDescription() {
         return description;
-    }
-
-    @Override
-    public String toString() {
-        return "DetailProduct{" +
-                "description='" + description + '\'' +
-                '}';
     }
 
     @Override
@@ -75,5 +71,14 @@ public class DetailProduct {
         } else if (!product.equals(other.product))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "DetailProduct{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", product=" + product +
+                '}';
     }
 }

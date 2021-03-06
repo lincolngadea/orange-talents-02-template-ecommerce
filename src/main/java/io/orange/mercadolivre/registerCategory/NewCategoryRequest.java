@@ -27,14 +27,6 @@ public class NewCategoryRequest {
         this.idCategoryMother = idCategory;
     }
 
-    @Override
-    public String toString() {
-        return "NewCategoryRequest{" +
-                "name='" + name + '\'' +
-                ", idCategoryMother=" + idCategoryMother +
-                '}';
-    }
-
     public Category toModel(EntityManager manager) {
         Category category = new Category(name);
         if(idCategoryMother!=null){

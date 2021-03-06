@@ -1,11 +1,11 @@
-package io.orange.mercadolivre.registerProduct;
+package io.orange.mercadolivre.registerProduct.response;
 
-import io.orange.mercadolivre.registerCategory.Category;
-import io.orange.mercadolivre.registerUser.UserAccount;
+import io.orange.mercadolivre.registerProduct.Product;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ProductResponse {
 
@@ -13,20 +13,21 @@ public class ProductResponse {
     private BigDecimal price;
     private Integer availableQuantity;
     private String description;
-    private Category category;
-    private UserAccount usernameAuth;
+    private String category;
+    private String usernameAuth;
     private LocalDateTime localDateTime;
-    private Set<DetailProduct> details;
+    private Set<String> details;
 
     public ProductResponse(Product product){
         name = product.getName();
         price = product.getPrice();
         availableQuantity = product.getAvailableQuantity();
         description = product.getDescription();
-        category = product.getCategory();
-        usernameAuth = product.getUsernameAuth();
+        category = product.getCategory().getName();
+        usernameAuth = product.getUsernameAuth().getUsername();
         localDateTime = product.getInstantDate();
-        details = product.getDetails();
+        details = product.getDetails().stream().map(detail -> detail.toString())
+                .collect(Collectors.toSet());
     }
 
     public String getName() {
@@ -45,11 +46,11 @@ public class ProductResponse {
         return description;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public UserAccount getUsernameAuth() {
+    public String getUsernameAuth() {
         return usernameAuth;
     }
 
@@ -57,21 +58,7 @@ public class ProductResponse {
         return localDateTime;
     }
 
-    public Set<DetailProduct> getDetails() {
+    public Set<String> getDetails() {
         return details;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductResponse{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
-                ", availableQuantity=" + availableQuantity +
-                ", description='" + description + '\'' +
-                ", category=" + category +
-                ", usernameAuth=" + usernameAuth +
-                ", localDateTime=" + localDateTime +
-                ", details=" + details +
-                '}';
     }
 }

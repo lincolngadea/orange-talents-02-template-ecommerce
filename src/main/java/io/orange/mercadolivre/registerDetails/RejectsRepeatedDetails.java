@@ -1,6 +1,6 @@
 package io.orange.mercadolivre.registerDetails;
 
-import io.orange.mercadolivre.registerProduct.NewProductRequest;
+import io.orange.mercadolivre.registerProduct.request.NewProductRequest;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
