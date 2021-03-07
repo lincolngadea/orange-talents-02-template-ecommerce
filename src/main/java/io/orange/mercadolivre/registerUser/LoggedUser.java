@@ -60,6 +60,7 @@ public class LoggedUser implements UserDetails {
         return userAccount;
     }
 
+
     @Override
     public String toString() {
         return "LoggedUser{" +

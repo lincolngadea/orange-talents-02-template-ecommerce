@@ -9,11 +9,10 @@ import io.orange.mercadolivre.registerProduct.response.ProductOpinionResponse;
 import io.orange.mercadolivre.registerProduct.response.ProductResponse;
 import io.orange.mercadolivre.registerUser.UserAccount;
 import io.orange.mercadolivre.registerUser.UserAccountRepository;
+import io.orange.mercadolivre.shared.UserAuthenticated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +34,9 @@ public class ProductController {
     private EntityManager manager;
 
     @Autowired
+    private UserAuthenticated userAuthenticated;
+
+    @Autowired
     private UserAccountRepository userAccountRepository;
 
     @InitBinder(value = "newProductRequest")
@@ -47,10 +49,10 @@ public class ProductController {
     @Transactional
     public ResponseEntity<?> createProduct(@RequestBody @Valid NewProductRequest request){
 
-        UserAccount usernameAuth = userAuthenticated();
+        UserAccount usernameAuth = userAuthenticated.verifyUserAuthenticated(userAccountRepository);
+
         Product product = request.toModel(manager, usernameAuth);
         manager.persist(product);
-
         ProductResponse productResponse = new ProductResponse(product);
         return ResponseEntity.ok(productResponse);
     }
@@ -59,7 +61,7 @@ public class ProductController {
     @Transactional
     public String addImages(@PathVariable("id") Long id, @Valid NewImagesRequest request) {
 
-        UserAccount usernameAuth = userAuthenticated();
+        UserAccount usernameAuth = userAuthenticated.verifyUserAuthenticated(userAccountRepository);
         Product product = manager.find(Product.class, id);
         productValidId(usernameAuth, product);
 
@@ -76,7 +78,7 @@ public class ProductController {
     public ResponseEntity<?> productOpinio(@PathVariable("id") Long id, @RequestBody @Valid NewProductOpinionRequest request){
 
         Product product = manager.find(Product.class,id);
-        UserAccount usernameAuth = userAuthenticated();
+        UserAccount usernameAuth = userAuthenticated.verifyUserAuthenticated(userAccountRepository);
         productValidId(usernameAuth, product);
 
         ProductOpinion productOpinion = request.toModel(manager,product,usernameAuth);
@@ -84,7 +86,6 @@ public class ProductController {
         manager.persist(productOpinion);
         return ResponseEntity.ok(new ProductOpinionResponse(productOpinion));
     }
-
     /**
      *
      * @param usernameAuth validate
@@ -94,16 +95,6 @@ public class ProductController {
         if(!product.belongsToTheUser(usernameAuth)){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
-    }
-
-    /**
-     *
-     * @return authenticated user
-     */
-    private UserAccount userAuthenticated() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserAccount usernameAuth = userAccountRepository.findByUsername(auth.getName()).get();
-        return usernameAuth;
     }
 }
 
