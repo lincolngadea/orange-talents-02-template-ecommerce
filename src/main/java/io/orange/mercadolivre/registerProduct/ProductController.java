@@ -57,7 +57,7 @@ public class ProductController {
         return ResponseEntity.ok(productResponse);
     }
 
-    @PostMapping("/produto/{id}/images")
+    @PostMapping("/produto/{id}/imagens")
     @Transactional
     public String addImages(@PathVariable("id") Long id, @Valid NewImagesRequest request) {
 
@@ -72,6 +72,15 @@ public class ProductController {
 
         return product.toString();
     }
+
+//    @GetMapping("/produto/{id}/detalhes")
+//    @Transactional
+//    public ResponseEntity<?> productDetail(@PathVariable Long id){
+//
+//        Product product = manager.find(Product.class,id);
+//        ResponseEntities responseEntities = new ResponseEntities(product,);
+//        return ResponseEntity.ok().build();
+//    }
 
     @PostMapping("produto/{id}/opiniao")
     @Transactional

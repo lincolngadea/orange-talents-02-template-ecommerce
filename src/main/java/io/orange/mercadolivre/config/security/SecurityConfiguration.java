@@ -54,6 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/mercadolivre/categoria").authenticated()
                 .antMatchers(HttpMethod.POST,"/mercadolivre/question/**").authenticated()
+                .antMatchers(HttpMethod.POST,"/mercadolivre/produtos/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .cors()

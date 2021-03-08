@@ -1,5 +1,6 @@
 package io.orange.mercadolivre.registerAsks;
 
+import io.orange.mercadolivre.registerProduct.Product;
 import io.orange.mercadolivre.registerUser.UserAccount;
 
 import javax.persistence.*;
@@ -15,15 +16,19 @@ public class Ask {
     private @NotBlank String title;
     @ManyToOne @NotNull
     private UserAccount usernameAuth;
+    @ManyToOne @NotNull
+    private Product product;
+
     private LocalDateTime instanteDate = LocalDateTime.now();
 
     @Deprecated
     public Ask() {
     }
 
-    public Ask(@NotBlank String title, UserAccount usernameAuth) {
+    public Ask(@NotBlank String title, UserAccount usernameAuth, Product product) {
         this.title = title;
         this.usernameAuth = usernameAuth;
+        this.product = product;
     }
 
     public String getTitle() {
@@ -38,12 +43,15 @@ public class Ask {
         return instanteDate;
     }
 
+    public Product getProduct() { return product;}
+
     @Override
     public String toString() {
         return "Ask{" +
                 "title='" + title + '\'' +
                 ", usernameAuth=" + usernameAuth +
                 ", instanteDate=" + instanteDate +
+                ", product =" + product +
                 '}';
     }
 }

@@ -34,7 +34,7 @@ public class AskController {
     public ResponseEntity<AskResponseDetails> createQuestion(@PathVariable("idProduct") Long id, @RequestBody @Valid NewAskRequest request){
 
         UserAccount usernameAuth = userAuthenticated.verifyUserAuthenticated(userAccountRepository);
-        Ask newAsk = request.toModel(usernameAuth);
+        Ask newAsk = request.toModel(manager,usernameAuth,id);
         manager.persist(newAsk);
         emails.newAsk(newAsk);
         AskResponseDetails askResponseDetails = new AskResponseDetails(newAsk);

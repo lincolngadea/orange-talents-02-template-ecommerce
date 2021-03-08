@@ -72,9 +72,7 @@ public class Product {
         return name;
     }
 
-    public Set<DetailProduct> getDetails() {
-        return details;
-    }
+    public Set<DetailProduct> getDetails() {return details;}
 
     public BigDecimal getPrice() {
         return price;
@@ -88,9 +86,9 @@ public class Product {
         return description;
     }
 
-    public UserAccount getUsernameAuth() {
-        return usernameAuth;
-    }
+    public UserAccount getUsernameAuth() { return usernameAuth; }
+
+    public Set<ProductImage> getImages() {return images; }
 
     public Category getCategory() {return category; }
 
@@ -142,6 +140,7 @@ public class Product {
                 ", description='" + description + '\'' +
                 ", category=" + category +
                 ", instantDate=" + instantDate +
+                ", images=" + images +
                 '}';
     }
 }

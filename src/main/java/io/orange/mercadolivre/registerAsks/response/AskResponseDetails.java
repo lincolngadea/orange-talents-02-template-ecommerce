@@ -9,11 +9,13 @@ public class AskResponseDetails {
     private String title;
     private String usernameAuth;
     private LocalDateTime instanteDate;
+    private String product;
 
     public AskResponseDetails(Ask ask){
         title = ask.getTitle();
         usernameAuth = ask.getUsernameAuth().getUsername();
         instanteDate = ask.getInstanteDate();
+        product = ask.getProduct().getName();
     }
 
     public String getTitle() {
@@ -27,4 +29,6 @@ public class AskResponseDetails {
     public LocalDateTime getInstanteDate() {
         return instanteDate;
     }
+
+    public String getProduct() {return product;}
 }
