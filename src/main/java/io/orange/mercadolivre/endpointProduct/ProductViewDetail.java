@@ -4,12 +4,15 @@ import io.orange.mercadolivre.registerProduct.Product;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.OptionalDouble;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.stream.IntStream;
 
 public class ProductViewDetail {
 
     private final Set<String> linkImage;
+    private double averageNotes;
     private String name;
     private String description;
     private BigDecimal price;
@@ -31,6 +34,16 @@ public class ProductViewDetail {
                     "description",opinion.getDescription()
             );
         });
+        Set<Integer> notes = product.mapOpinion(opinion -> opinion.getNote());
+        IntStream noteToInt = notes.stream().mapToInt(note -> note);
+        OptionalDouble average = noteToInt.average();
+        if(average.isPresent()){
+            this.averageNotes = average.getAsDouble();
+        }
+    }
+
+    public double getAverageNotes() {
+        return averageNotes;
     }
 
     public String getName() {
