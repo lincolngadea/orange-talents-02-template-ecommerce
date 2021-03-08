@@ -1,5 +1,6 @@
 package io.orange.mercadolivre.registerProduct;
 
+import io.orange.mercadolivre.registerAsks.Ask;
 import io.orange.mercadolivre.registerCategory.Category;
 import io.orange.mercadolivre.registerDetails.NewDetailsRequest;
 import io.orange.mercadolivre.registerImages.ProductImage;
@@ -12,9 +13,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Entity
@@ -37,6 +37,11 @@ public class Product {
     private Set<DetailProduct> details = new HashSet<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
     private Set<ProductImage> images = new HashSet<>();
+    @OneToMany(mappedBy = "product")
+    @OrderBy("title asc")
+    private SortedSet<Ask> asks = new TreeSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+    private Set<ProductOpinion> opinions = new HashSet<>();
 
     @Deprecated
     public Product() {
@@ -96,30 +101,27 @@ public class Product {
         return instantDate;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
+    public <T> Set<T> mapCharacetristics(Function<DetailProduct, T> mapFunction){
+                return this.details.stream().map(mapFunction)
+                        .collect(Collectors.toSet());
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Product other = (Product) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
+    public <T> Set<T> mapImages(Function<ProductImage, T> mapFunction){
+        return this.images.stream().map(mapFunction)
+                .collect(Collectors.toSet());
     }
+
+    public <T extends Comparable<T>> SortedSet<T> mapAsk(Function<Ask, T> mapFunction){
+        return this.asks.stream().map(mapFunction)
+                .collect(Collectors.toCollection(TreeSet::new));
+    }
+
+    public <T> Set<T> mapOpinion(Function<ProductOpinion, T> mapFunction){
+        return this.opinions.stream().map(mapFunction)
+                .collect(Collectors.toSet());
+    }
+
+
 
     public void imagesAssociations(Set<String> links) {
         Set<ProductImage> images = links.stream().map(link -> new ProductImage(this, link))
@@ -142,5 +144,18 @@ public class Product {
                 ", instantDate=" + instantDate +
                 ", images=" + images +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return name.equals(product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

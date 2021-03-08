@@ -47,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/mercadolivre/produtos/{id:[0-9]+}").permitAll()
+                .antMatchers(HttpMethod.GET, "/mercadolivre/produto/{id:[0-9]+}").permitAll()
                 .antMatchers(HttpMethod.GET, "/mercadolivre/usuario/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/mercadolivre/usuario").permitAll()
                 .antMatchers("/api/auth/**").permitAll()

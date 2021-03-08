@@ -7,9 +7,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
-public class Ask {
+public class Ask implements Comparable<Ask>{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -53,5 +54,23 @@ public class Ask {
                 ", instanteDate=" + instanteDate +
                 ", product =" + product +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Ask)) return false;
+        Ask ask = (Ask) o;
+        return title.equals(ask.title) && usernameAuth.equals(ask.usernameAuth) && product.equals(ask.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, usernameAuth, product);
+    }
+
+    @Override
+    public int compareTo(@org.jetbrains.annotations.NotNull Ask o) {
+        return this.title.compareTo(o.title);
     }
 }

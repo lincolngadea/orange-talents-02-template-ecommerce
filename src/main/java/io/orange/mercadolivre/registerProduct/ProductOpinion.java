@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Objects;
 
 @Entity
 public class ProductOpinion {
@@ -70,5 +71,18 @@ public class ProductOpinion {
                 ", usernameAuth=" + usernameAuth +
                 ", product=" + product +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProductOpinion)) return false;
+        ProductOpinion that = (ProductOpinion) o;
+        return title.equals(that.title) && description.equals(that.description) && usernameAuth.equals(that.usernameAuth) && product.equals(that.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, description, usernameAuth, product);
     }
 }
