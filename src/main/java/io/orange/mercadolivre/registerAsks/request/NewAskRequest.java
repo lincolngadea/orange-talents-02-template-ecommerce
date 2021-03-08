@@ -1,19 +1,19 @@
-package io.orange.mercadolivre.registerQuestions.request;
+package io.orange.mercadolivre.registerAsks.request;
 
-import io.orange.mercadolivre.registerQuestions.Ask;
+import io.orange.mercadolivre.registerAsks.Ask;
 import io.orange.mercadolivre.registerUser.UserAccount;
 
 import javax.validation.constraints.NotBlank;
 
-public class NewAskControllerRequest {
+public class NewAskRequest {
 
     private @NotBlank String title;
 
     @Deprecated
-    public NewAskControllerRequest() {
+    public NewAskRequest() {
     }
 
-    public NewAskControllerRequest(@NotBlank String title) {
+    public NewAskRequest(@NotBlank String title) {
         this.title = title;
     }
 

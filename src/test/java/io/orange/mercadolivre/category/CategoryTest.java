@@ -19,7 +19,7 @@ import javax.persistence.EntityManager;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 @AutoConfigureDataJpa
 @SpringBootTest
@@ -31,7 +31,7 @@ public class CategoryTest {
     @Autowired
     EntityManager manager;
 
-    static String ML_API = "/mercadolivre/categories";
+    static String ML_API = "/mercadolivre/categoria";
 
     @Transactional
     @Test

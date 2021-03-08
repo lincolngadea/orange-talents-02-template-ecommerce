@@ -1,7 +1,7 @@
 package io.orange.mercadolivre.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.orange.mercadolivre.registerUser.NewUserAccountRequest;
+import io.orange.mercadolivre.registerUser.request.NewUserAccountRequest;
 import io.orange.mercadolivre.util.MockBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -46,7 +46,7 @@ class UserAccountTest {
         mvc
                 .perform(MockBuilder.run(ML_API, json))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("username").value("teste2@logado.com"));
+                .andExpect(content().json("{'username':'teste2@logado.com'}"));
 //               .andExpect(jsonPath("$[0].status").isNumber());
     }
 

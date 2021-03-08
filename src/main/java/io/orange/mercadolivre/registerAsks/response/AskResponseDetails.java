@@ -1,6 +1,6 @@
-package io.orange.mercadolivre.registerQuestions.response;
+package io.orange.mercadolivre.registerAsks.response;
 
-import io.orange.mercadolivre.registerQuestions.Ask;
+import io.orange.mercadolivre.registerAsks.Ask;
 
 import java.time.LocalDateTime;
 

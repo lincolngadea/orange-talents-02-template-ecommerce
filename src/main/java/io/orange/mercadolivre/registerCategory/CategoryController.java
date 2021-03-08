@@ -18,7 +18,7 @@ public class CategoryController {
     @PersistenceContext
     private EntityManager manager;
 
-    @PostMapping("/categories")
+    @PostMapping("/categoria")
     @Transactional
     public ResponseEntity<Category> createCategory(@RequestBody @Valid NewCategoryRequest request){
         Category category = request.toModel(manager);

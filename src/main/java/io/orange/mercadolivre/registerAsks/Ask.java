@@ -1,4 +1,4 @@
-package io.orange.mercadolivre.registerQuestions;
+package io.orange.mercadolivre.registerAsks;
 
 import io.orange.mercadolivre.registerUser.UserAccount;
 

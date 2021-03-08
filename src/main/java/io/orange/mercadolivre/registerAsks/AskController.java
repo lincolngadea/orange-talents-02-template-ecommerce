@@ -1,7 +1,7 @@
-package io.orange.mercadolivre.registerQuestions;
+package io.orange.mercadolivre.registerAsks;
 
-import io.orange.mercadolivre.registerQuestions.request.NewAskControllerRequest;
-import io.orange.mercadolivre.registerQuestions.response.AskResponseDetails;
+import io.orange.mercadolivre.registerAsks.request.NewAskRequest;
+import io.orange.mercadolivre.registerAsks.response.AskResponseDetails;
 import io.orange.mercadolivre.registerUser.UserAccount;
 import io.orange.mercadolivre.registerUser.UserAccountRepository;
 import io.orange.mercadolivre.shared.UserAuthenticated;
@@ -26,14 +26,18 @@ public class AskController {
     @Autowired
     private UserAccountRepository userAccountRepository;
 
+    @Autowired
+    private Emails emails;
+
     @PostMapping("/question/{idProduct}")
     @Transactional
-    public ResponseEntity<AskResponseDetails> createQuestion(@PathVariable("idProduct") Long id, @RequestBody @Valid NewAskControllerRequest request){
+    public ResponseEntity<AskResponseDetails> createQuestion(@PathVariable("idProduct") Long id, @RequestBody @Valid NewAskRequest request){
 
         UserAccount usernameAuth = userAuthenticated.verifyUserAuthenticated(userAccountRepository);
-        Ask ask = request.toModel(usernameAuth);
-        manager.persist(ask);
-        AskResponseDetails askResponseDetails = new AskResponseDetails(ask);
+        Ask newAsk = request.toModel(usernameAuth);
+        manager.persist(newAsk);
+        emails.newAsk(newAsk);
+        AskResponseDetails askResponseDetails = new AskResponseDetails(newAsk);
         return ResponseEntity.ok(askResponseDetails);
     }
 

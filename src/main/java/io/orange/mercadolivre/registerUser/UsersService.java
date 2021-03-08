@@ -40,5 +40,4 @@ public class UsersService implements UserDetailsService {
 
         return userDetailsMapper.map(objects.get(0));
     }
-
 }

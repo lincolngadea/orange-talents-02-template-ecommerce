@@ -1,5 +1,7 @@
 package io.orange.mercadolivre.registerUser;
 
+import io.orange.mercadolivre.registerUser.request.NewUserAccountRequest;
+import io.orange.mercadolivre.registerUser.response.UserAccountResponseDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +28,8 @@ public class UserAccountController {
     public ResponseEntity<?> saveUser(@RequestBody @Valid NewUserAccountRequest userRequest) {
         UserAccount user = userRequest.toModel();
         manager.persist(user);
-        return ResponseEntity.ok(user.toString());
+        UserAccountResponseDetails userAccountResponseDetails = new UserAccountResponseDetails(user);
+        return ResponseEntity.ok(userAccountResponseDetails);
     }
 
     @GetMapping("/usuario/{user}")
