@@ -14,6 +14,7 @@ public class ProductViewDetail {
     private final Set<String> linkImage;
     private double averageNotes;
     private String name;
+    private final Integer quantity;
     private String description;
     private BigDecimal price;
     private final Set<DetailProductCharacteristic> details;
@@ -28,6 +29,7 @@ public class ProductViewDetail {
         details = product.mapCharacetristics(  DetailProductCharacteristic::new);
         linkImage = product.mapImages(image -> image.getLink());
         asks = product.mapAsk(ask -> ask.getTitle());
+        quantity = product.getAvailableQuantity();
         opinions = product.mapOpinion(opinion->{
             return Map.of(
                     "title", opinion.getTitle(),
@@ -40,6 +42,10 @@ public class ProductViewDetail {
         if(average.isPresent()){
             this.averageNotes = average.getAsDouble();
         }
+    }
+
+    public Integer getQuantity() {
+        return quantity;
     }
 
     public double getAverageNotes() {

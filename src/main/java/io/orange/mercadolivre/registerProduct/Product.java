@@ -121,7 +121,14 @@ public class Product {
                 .collect(Collectors.toSet());
     }
 
-
+    public boolean deductOfStock(@Positive Integer quantity) {
+        Assert.isTrue(quantity > 0, "The amount must be greater than zero. "+quantity);
+        if(quantity <= this.availableQuantity){
+            this.availableQuantity -= quantity;
+            return true;
+        }
+        return false;
+    }
 
     public void imagesAssociations(Set<String> links) {
         Set<ProductImage> images = links.stream().map(link -> new ProductImage(this, link))
@@ -158,4 +165,6 @@ public class Product {
     public int hashCode() {
         return Objects.hash(name);
     }
+
+
 }
