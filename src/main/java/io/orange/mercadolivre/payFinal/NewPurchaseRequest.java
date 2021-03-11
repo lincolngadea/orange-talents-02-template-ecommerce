@@ -27,11 +27,9 @@ public class NewPurchaseRequest {
     public Integer getQuantity() {
         return quantity;
     }
-
     public Long getIdProduct() {
         return idProduct;
     }
-
     public GatewayPurchase getGateway() {
         return gateway;
     }
